@@ -1,0 +1,24 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Useful Quotes</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        </div>
+      </div>
+    </nav>
+	<header></header>
+	<div class="container-fluid">
+
+	<div class="row" style="height: 100vh;">
+		<aside class="col-md-3 sidebar" style="padding-top: 75px;background-color: #c3c3c3;min-height: 100%;">
+			<h3>New Quote:</h3>
+		</aside>
+		<main class="col-md-9 main" style="padding-top: 75px;">
+		<div id="content"><%= react_component 'Quotes', { data: @quotes } %></div>
+			
+
+		</main>
+	</div>
+
+</div>
