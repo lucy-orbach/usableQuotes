@@ -1,32 +1,39 @@
 var Quote = React.createClass ({
   render: function(){
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
+     var converter = new Showdown.converter();
+     var rawMarkup = converter.makeHtml(this.props.children.toString(), {sanitize: true});
+     
     return (
+
       <div className="quote">
         <h2 className="quoteTxt">
           {this.props.txt}
         </h2>
+        <div className="quoteDetails">
+          {this.props.character} | {this.props.movie}
+        </div>
+        
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       </div>
     );
   }
 });
 
-var QuotesBox = React.createClass ({
+var QuoteBox = React.createClass ({
   loadQuotesFromServer: function(){
     $.ajax({
       url: this.props.url,
       dataType: 'json',
       cache: false,
-      success: function(){
+      success: function(data){
         this.setState({data: data});
       }.bind(this),
-      error: function(){
+      error: function(xhr, status, err){
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
   },
-  handleQuoteSubmit: function(comment){
+  handleQuoteSubmit: function(quote){
     var quotes = this.state.data;
     quotes.push(quote);
     this.setState( {data: quotes}, function(){
@@ -34,7 +41,7 @@ var QuotesBox = React.createClass ({
         url: this.props.url,
         dataType: 'json',
         type: 'POST',
-        data: quote,
+        data: {quote: quote},
         success: function(data){
           this.setState({data: data});
         }.bind(this),
@@ -64,10 +71,12 @@ var QuotesBox = React.createClass ({
 
 var QuoteList = React.createClass ({
   render: function(){
-    var quoteNodes = this.props.data.map( function(comment, index){
+
+    var quoteNodes = this.props.data.map( function(quote, index){
+      
       return (
-        <Quote txt={quote.txt} key={index}>
-          {quote.text}
+        <Quote character={quote.character} movie={quote.movie}  key={index}>
+          {quote.txt}
         </Quote>
       );
     });
@@ -86,12 +95,12 @@ var QuoteForm = React.createClass ({
     var character = React.findDOMNode(this.refs.character).value.trim();
     var movie = React.findDOMNode(this.refs.movie).value.trim();
     var img = React.findDOMNode(this.refs.img).value.trim();
-    if (!text || !author) {
+    if (!txt || !character || !movie) {
       return;
     }
     this.props.onQuoteSubmit({txt: txt, character: character, movie: movie, img: img });
     React.findDOMNode(this.refs.txt).value = '';
-    React.findDOMNode(this.refs.text).value = '';
+    React.findDOMNode(this.refs.character).value = '';
   },
   render: function(){
     return (
@@ -106,10 +115,16 @@ var QuoteForm = React.createClass ({
   }
 });
 
-React.render(
-  <QuoteBox url="quotes.json" pollInterval={2000} />,
-  document.getElementById('content')
-);
+$(function (){
+  var $content = $("#content");
+  if ($content.length > 0) {
+    React.render(
+      <QuoteBox url="quotes.json" pollInterval={2000} />,
+      document.getElementById('content')
+    ); 
+  }
+});
+
 
 
 

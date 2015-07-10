@@ -22,10 +22,17 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
+
 #pry
 gem 'pry'
 #react
 gem 'react-rails', '~> 1.0'
+#Showdown.js is a Javascript port of a Markdown compiler, mostly compatible with the original markdown.pl script.
+gem 'showdown-rails'
+#Pg is the Ruby interface to the PostgreSQL RDBMS.
+gem 'pg', group: :production
+#Makes running your Rails app easier. Based on the ideas behind 12factor.net
+gem 'rails_12factor'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
