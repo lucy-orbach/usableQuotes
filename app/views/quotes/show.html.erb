@@ -12,6 +12,7 @@
 
 	<div class="row" style="height: 100vh;">
 		<main class="col-md-9 main" style="padding-top: 75px;">
+		<div id="content"></div>
 		<%= link_to '<< Go Back', quotes_path %> | <%= link_to 'Got a quote?', new_quote_path %>
 		<div class="panel">
 			<quote>"<%= @quote.txt %>"</quote>
