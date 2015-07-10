@@ -8,10 +8,9 @@ var Quote = React.createClass ({
       <div className="quote">
         <h2 className="quoteTxt">
           {this.props.txt}
-        </h2>
-        <div className="quoteDetails">
           {this.props.character} | {this.props.movie}
-        </div>
+        </h2>
+        
         
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       </div>
@@ -20,6 +19,7 @@ var Quote = React.createClass ({
 });
 
 var QuoteBox = React.createClass ({
+
   loadQuotesFromServer: function(){
     $.ajax({
       url: this.props.url,
@@ -60,10 +60,15 @@ var QuoteBox = React.createClass ({
   },
   render: function(){
     return (
+
       <div className="quoteBox">
-        <h1>Useful Quotes</h1>
-        <QuoteList data={this.state.data} />
+        <aside>
+        <h1>{this.state.data.length} Useful Quotes</h1>
+        <h5 class="slogan">A Place to Keep Record of your Favorite Movie Quotes</h5>
         <QuoteForm onQuoteSubmit={this.handleQuoteSubmit} />
+        </aside>
+        <QuoteList data={this.state.data} />
+        
       </div>
     );
   }
@@ -83,7 +88,8 @@ var QuoteList = React.createClass ({
     return (
       <div className="quoteList">
         {quoteNodes}
-      </div>  
+      </div> 
+      
     );
   }
 });//QuotesLists
@@ -104,6 +110,7 @@ var QuoteForm = React.createClass ({
   },
   render: function(){
     return (
+
       <form className="quoteForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Enter Quote" ref="txt" />
         <input type="text" placeholder="Enter Character" ref="character" />
