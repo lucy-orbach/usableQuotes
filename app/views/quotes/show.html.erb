@@ -12,14 +12,12 @@
 
 	<div class="row" style="height: 100vh;">
 		<main class="col-md-9 main" style="padding-top: 75px;">
-		<%= link_to 'Got a quote?', new_quote_path %>
-		<div id="content"><%= react_component 'Quotes', { data: @quotes } %></div>
-			<% @quotes.each do |quote| %>		
-  <h2>"<%= link_to quote.txt, quote %>"</h2>
-  <h6><%= quote.character%> | <%= quote.movie%></h6>
-  <p><%= link_to 'Edit', edit_quote_path(quote) %></p>
-  <p><%= link_to 'Destroy', quote, method: :delete, data: { confirm: 'Are you sure?' } %></p>
-<% end %>
+		<%= link_to '<< Go Back', quotes_path %> | <%= link_to 'Got a quote?', new_quote_path %>
+		<div class="panel">
+			<quote>"<%= @quote.txt %>"</quote>
+			<p><%= @quote.character %> | <%= @quote.movie %></p>
+		</div>
+			
 
 		</main>
 	</div>
