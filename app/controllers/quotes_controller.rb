@@ -23,8 +23,13 @@ class QuotesController < ApplicationController
 	def destroy
 		quote = Quote.find(params[:id])
     quote.destroy
-    redirect_to index
+    respond_to do |format|
+      format.html { redirect_to index }
+      format.json { head :no_content }
+    end
   end
+
+  
 
 	private
     

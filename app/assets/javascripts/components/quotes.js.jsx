@@ -1,17 +1,13 @@
 var Quote = React.createClass ({
   render: function(){
      var converter = new Showdown.converter();
-     var rawMarkup = converter.makeHtml(this.props.children.toString(), {sanitize: true});
-     
+     var rawMarkup = converter.makeHtml(this.props.children.toString(), {sanitize: true});  
     return (
-
       <div className="quote">
         <h2 className="quoteTxt">
           {this.props.txt}
           {this.props.character} | {this.props.movie}
         </h2>
-        
-        
         <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
       </div>
     );
@@ -64,11 +60,12 @@ var QuoteBox = React.createClass ({
       <div className="quoteBox">
         <aside>
         <h1>{this.state.data.length} Useful Quotes</h1>
-        <h5 class="slogan">A Place to Keep Record of your Favorite Movie Quotes</h5>
+        <h5>A Place to Keep Record of your Favorite Movie Quotes</h5>
         <QuoteForm onQuoteSubmit={this.handleQuoteSubmit} />
         </aside>
-        <QuoteList data={this.state.data} />
-        
+        <main>
+          <QuoteList data={this.state.data} />
+        </main>
       </div>
     );
   }
@@ -77,8 +74,7 @@ var QuoteBox = React.createClass ({
 var QuoteList = React.createClass ({
   render: function(){
 
-    var quoteNodes = this.props.data.map( function(quote, index){
-      
+    var quoteNodes = this.props.data.map( function(quote, index){ 
       return (
         <Quote character={quote.character} movie={quote.movie}  key={index}>
           {quote.txt}
@@ -122,6 +118,19 @@ var QuoteForm = React.createClass ({
   }
 });
 
+var QuoteDelete = React.createClass ({
+  handleDeleteRequest: function(e){
+    debugger;
+    e.preventDefault();
+    
+  },
+  render: function(){
+    return (
+      <button className="quoteDelete" onClick={this.handleDeleteRequest}>X</button>
+    );
+  }
+});
+
 $(function (){
   var $content = $("#content");
   if ($content.length > 0) {
@@ -131,43 +140,4 @@ $(function (){
     ); 
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
