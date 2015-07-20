@@ -1,9 +1,11 @@
+'use strict'
 var Quote = React.createClass ({
   render: function(){
      var converter = new Showdown.converter();
      var rawMarkup = converter.makeHtml(this.props.children.toString(), {sanitize: true});  
     return (
-      <div className="quote">
+      <div className="quote" data-id={this.props.quoteid} >
+        <QuoteDelete />
         <h2 className="quoteTxt">
           {this.props.txt}
           {this.props.character} | {this.props.movie}
@@ -15,7 +17,6 @@ var Quote = React.createClass ({
 });
 
 var QuoteBox = React.createClass ({
-
   loadQuotesFromServer: function(){
     $.ajax({
       url: this.props.url,
@@ -47,6 +48,9 @@ var QuoteBox = React.createClass ({
       });
     });
   },
+  handleQuoteDelete: function(id){
+    debugger;
+  },
   getInitialState: function() {
     return {data: []};
   },
@@ -56,7 +60,6 @@ var QuoteBox = React.createClass ({
   },
   render: function(){
     return (
-
       <div className="quoteBox">
         <aside>
         <h1>{this.state.data.length} Useful Quotes</h1>
@@ -73,14 +76,13 @@ var QuoteBox = React.createClass ({
 
 var QuoteList = React.createClass ({
   render: function(){
-
     var quoteNodes = this.props.data.map( function(quote, index){ 
       return (
-        <Quote character={quote.character} movie={quote.movie}  key={index}>
+        <Quote quoteid = {quote.id} character={quote.character} movie={quote.movie}  key={index}>
           {quote.txt}
         </Quote>
       );
-    });
+    }.bind(this));
     return (
       <div className="quoteList">
         {quoteNodes}
@@ -106,7 +108,6 @@ var QuoteForm = React.createClass ({
   },
   render: function(){
     return (
-
       <form className="quoteForm" onSubmit={this.handleSubmit}>
         <input type="text" placeholder="Enter Quote" ref="txt" />
         <input type="text" placeholder="Enter Character" ref="character" />
@@ -118,15 +119,15 @@ var QuoteForm = React.createClass ({
   }
 });
 
-var QuoteDelete = React.createClass ({
-  handleDeleteRequest: function(e){
-    debugger;
+var QuoteDelete = React.createClass({
+  handleDelete: function(e){
     e.preventDefault();
-    
+    var id = parseInt(event.path[1].getAttribute("data-id"));
+    this.props.onQuoteDelete({id: id });
   },
   render: function(){
     return (
-      <button className="quoteDelete" onClick={this.handleDeleteRequest}>X</button>
+      <button className="quoteDelete" onClick={this.handleDelete} > x </button>
     );
   }
 });
