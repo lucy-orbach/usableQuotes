@@ -96,6 +96,8 @@ var QuoteForm = React.createClass ({
     this.props.onQuoteSubmit({txt: txt, character: character, movie: movie, img: img });
     React.findDOMNode(this.refs.txt).value = '';
     React.findDOMNode(this.refs.character).value = '';
+    React.findDOMNode(this.refs.movie).value = '';
+    React.findDOMNode(this.refs.img).value = '';
   },
   render: function(){
     return (
