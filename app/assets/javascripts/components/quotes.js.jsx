@@ -1,22 +1,20 @@
 'use strict'
 var Quote = React.createClass ({
-  render: function(){
-     var converter = new Showdown.converter();
-     var rawMarkup = converter.makeHtml(this.props.children.toString(), {sanitize: true});  
+  render: function(){  
     return (
-      <div className="quote" data-id={this.props.quoteid} >
+      <div className="quote" data-id={this.props.quoteId} >
         <QuoteDelete />
-        <h2 className="quoteTxt">
-          {this.props.txt}
-          {this.props.character} | {this.props.movie}
-        </h2>
-        <span dangerouslySetInnerHTML={{__html: rawMarkup}} />
+        <h2 className="quoteTxt">{this.props.children}</h2>
+        <h6 className="quoteDet">{this.props.character} | {this.props.movie}</h6>
       </div>
     );
   }
 });
 
 var QuoteBox = React.createClass ({
+  getInitialState: function() {
+    return {data: []};
+  },
   loadQuotesFromServer: function(){
     $.ajax({
       url: this.props.url,
@@ -29,6 +27,10 @@ var QuoteBox = React.createClass ({
         console.error(this.props.url, status, err.toString());
       }.bind(this)
     });
+  },
+  componentDidMount: function(){
+    this.loadQuotesFromServer();
+    setInterval(this.loadQuotesFromServer, this.props.pollInterval);
   },
   handleQuoteSubmit: function(quote){
     var quotes = this.state.data;
@@ -48,22 +50,26 @@ var QuoteBox = React.createClass ({
       });
     });
   },
-  handleQuoteDelete: function(id){
-    debugger;
-  },
-  getInitialState: function() {
-    return {data: []};
-  },
-  componentDidMount: function(){
-    this.loadQuotesFromServer();
-    setInterval(this.loadQuotesFromServer, this.props.pollInterval);
+  handleQuoteDelete: function(quoteId){
+    $.ajax({
+      url: this.props.url,
+      data: {id: quoteId},
+      type: 'DESTROY',
+      dataType: 'json',
+      success: function (quotes) {
+        this.setState({ quotes: quotes});
+      }.bund(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
   },
   render: function(){
     return (
       <div className="quoteBox">
         <aside>
         <h1>{this.state.data.length} Useful Quotes</h1>
-        <h5>A Place to Keep Record of your Favorite Movie Quotes</h5>
+        <h5>A Space to Keep Record of my Favorite Movie Quotes</h5>
         <QuoteForm onQuoteSubmit={this.handleQuoteSubmit} />
         </aside>
         <main>
@@ -75,10 +81,13 @@ var QuoteBox = React.createClass ({
 });//QuotesBox
 
 var QuoteList = React.createClass ({
+  handleQuoteDelete: function(quoteId){
+    return this.props.del(quoteId);
+  },
   render: function(){
     var quoteNodes = this.props.data.map( function(quote, index){ 
       return (
-        <Quote quoteid = {quote.id} character={quote.character} movie={quote.movie}  key={index}>
+        <Quote quoteId = {quote.id} character={quote.character} movie={quote.movie}  key={index} onDelete = {this.handleQuoteDelete}>
           {quote.txt}
         </Quote>
       );
@@ -120,14 +129,15 @@ var QuoteForm = React.createClass ({
 });
 
 var QuoteDelete = React.createClass({
-  handleDelete: function(e){
+  handleClick: function(e){
+    debugger;
     e.preventDefault();
-    var id = parseInt(event.path[1].getAttribute("data-id"));
-    this.props.onQuoteDelete({id: id });
+    var quoteId = parseInt(event.path[1].getAttribute("data-id"));
+    this.props.onQuoteDelete({quoteId});
   },
   render: function(){
     return (
-      <button className="quoteDelete" onClick={this.handleDelete} > x </button>
+      <button className="quoteDelete" onClick={this.handleClick} > &times; </button>
     );
   }
 });

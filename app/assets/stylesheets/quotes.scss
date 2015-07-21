@@ -97,20 +97,34 @@ main {
 			content: "“";
 			position: absolute;
 			left: 0px;
-			top: 10px;
+			top: -15px;
 			width: 15px;
 			height: 100%;
 			font-size: 10rem;
 			color: $lt-gray;
 			font-family: 'Century Gothic';
 		}
-	.quoteTxt {
-		margin-top: 0px;
-		font-size: 1.5rem;
+	button {
+		position: absolute;
+		z-index: 100;
+		top: 0px;
+		right: 0px;
+		width: 30px;
+		height: 30px;
+		background-color: #fff;
+		border: none;
+		color: $orange;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+	h2 {
+		margin-top: 10px;
+		text-indent: 30px;
+		font-size: 2.5rem;
 		color: $gray;
 	}
-	p {
-		padding-left: 30px;
-
+	h6 {
+		text-align: right;
 	}
 }
