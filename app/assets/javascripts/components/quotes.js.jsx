@@ -2,8 +2,7 @@
 var Quote = React.createClass ({
   render: function(){  
     return (
-      <div className="quote" data-id={this.props.quoteId} >
-        <QuoteDelete />
+      <div className="quote" id={this.props.quoteId} >
         <h2 className="quoteTxt">{this.props.children}</h2>
         <h6 className="quoteDet">{this.props.character} | {this.props.movie}</h6>
       </div>
@@ -50,20 +49,6 @@ var QuoteBox = React.createClass ({
       });
     });
   },
-  handleQuoteDelete: function(quoteId){
-    $.ajax({
-      url: this.props.url,
-      data: {id: quoteId},
-      type: 'DESTROY',
-      dataType: 'json',
-      success: function (quotes) {
-        this.setState({ quotes: quotes});
-      }.bund(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
-    });
-  },
   render: function(){
     return (
       <div className="quoteBox">
@@ -81,9 +66,6 @@ var QuoteBox = React.createClass ({
 });//QuotesBox
 
 var QuoteList = React.createClass ({
-  handleQuoteDelete: function(quoteId){
-    return this.props.del(quoteId);
-  },
   render: function(){
     var quoteNodes = this.props.data.map( function(quote, index){ 
       return (
@@ -128,19 +110,6 @@ var QuoteForm = React.createClass ({
   }
 });
 
-var QuoteDelete = React.createClass({
-  handleClick: function(e){
-    debugger;
-    e.preventDefault();
-    var quoteId = parseInt(event.path[1].getAttribute("data-id"));
-    this.props.onQuoteDelete({quoteId});
-  },
-  render: function(){
-    return (
-      <button className="quoteDelete" onClick={this.handleClick} > &times; </button>
-    );
-  }
-});
 
 $(function (){
   var $content = $("#content");
