@@ -54,7 +54,7 @@ var QuoteBox = React.createClass ({
       <div className="quoteBox">
         <aside>
         <h1>{this.state.data.length} Useful Quotes</h1>
-        <h5>A Space to Keep Record of my Favorite Movie Quotes</h5>
+        <h5>An App to Keep Record of my Favorite Movie Quotes</h5>
         <QuoteForm onQuoteSubmit={this.handleQuoteSubmit} />
         </aside>
         <main>
@@ -101,7 +101,9 @@ var QuoteForm = React.createClass ({
   },
   render: function(){
     return (
+      
       <form className="quoteForm" onSubmit={this.handleSubmit}>
+        <h4>Feel free to submit your favorite quote,<br />I might keep it...</h4>
         <input type="text" placeholder="Enter Quote" ref="txt" />
         <input type="text" placeholder="Enter Character" ref="character" />
         <input type="text" placeholder="Enter Movie" ref="movie" />
