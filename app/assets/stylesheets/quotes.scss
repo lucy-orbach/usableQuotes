@@ -85,7 +85,7 @@ main {
 }
 .quote {
 	position: relative;
-	float: left;
+	display: inline-block;
 	width: 31%;
 	padding: 15px;
 	margin: 10px 1%;
@@ -93,6 +93,7 @@ main {
 	background-color: #ffffff;
 	outline: 4px solid #ffffff;
 	font-size: 2rem;
+
 	&:before {
 			content: "“";
 			position: absolute;
