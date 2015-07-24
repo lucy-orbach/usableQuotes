@@ -17,4 +17,9 @@
 //= require react
 //= require react_ujs
 
-//= require_tree .
+//= require components/quote
+//= require components/quote-list
+//= require components/quote-form
+//= require components/quote-box
+//= require components/app
+
